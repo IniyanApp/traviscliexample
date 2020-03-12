@@ -1,250 +1,404 @@
+###language: android
+###jdk: oraclejdk8
+###
+###sudo: false
+###
+####cache:
+####  directories:
+####    - $HOME/gradle/caches/
+####    - $HOME/gradle/wrapper/dists/
+###
+###
+###env:
+###  global:
+###      - ANDROID_API_LEVEL=28
+###      - EMULATOR_API_LEVEL=28
+###      - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+###      - ANDROID_ABI=arm64-v8a
+###      - ANDROID_TAG=google_apis
+###      - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+###
+###android:
+###  components:
+###    - tools # to get the new `repository-11.xml`
+###    - platform-tools
+###    - tools # to install Android SDK tools 25.1.x
+###    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+###    - android-$ANDROID_API_LEVEL
+###    - android-$EMULATOR_API_LEVEL
+###    # For Google APIs
+###    - addon-google_apis-google-$ANDROID_API_LEVEL
+###    - addon-google_apis-google-$EMULATOR_API_LEVEL
+###    # Google Play Services
+###    - extra-google-google_play_services
+###    # Support library
+###    - extra-android-support
+###    # Latest artifacts in local repository
+###    - extra-google-m2repository
+###    - extra-android-m2repository
+###    # Specify at least one system image
+###    - sys-img-arm64-v8a-google_apis-$ANDROID_API_LEVEL
+###    - sys-img-arm64-v8a-google_apis-$EMULATOR_API_LEVEL
+###  licenses:
+###    - android-sdk-license-.+
+###    - .+
+###
+###before_script:
+###  # Create and start emulator
+###  - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
+###  - emulator -avd test -no-skin -no-audio -no-window &
+###  - android-wait-for-emulator
+###
+###
+###script:
+###  - ./gradlew clean check connectedCheck -x library:signArchives -PdisablePreDex
+###
+###deploy:
+###  provider: releases
+###  github-token: d3748eb233c70834e1dd5d8b7082af1b25a1d295
+###  api_key:
+###    secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
+###
+###  # file_glob: true
+###  #file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
+###  # local_dir: build
+###  on:
+###  repo: IniyanApp/traviscliexample
+###  #branch: master
+####    tags: true
+###
+##
+##
+##os: linux
+##
+##sudo: required
+##language: android
+##jdk: oraclejdk8
+##dist : trusty
+##before_cache:
+##
+##  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+##
+##  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+##
+##cache:
+##
+##  directories:
+##
+##    - $HOME/.gradle/caches/
+##
+##    - $HOME/.gradle/wrapper/
+##
+##env:
+##
+##  global:
+##
+##    - ANDROID_API=28
+##
+##    - EMULATOR_API=28
+##
+##    - ANDROID_BUILD_TOOLS=28.0.3
+##
+##    - ADB_INSTALL_TIMEOUT=5 # minutes
+###    - secure: "kYQFW12wY9zzMNqtor4sTeE4k/877t0igpS/AaPon7MNr+ebqEkeg9z6L1sE+81bopDX+0K62AxO4mKVxOiGGGVU5JS1ZFWg/BhPyKCThm1tUzXCBs5s8AxWU9s9MudfTHgPLwsOhvpKogivA0ZXt5iEFrkv57A51qZFMQ0Irl8iAaMiwjzv+FRT26jCCBCKB5jlRwocwOB7wEujlUN289i5y9o/wcWhBmA5YY7y64hdlZEs/bmF7RXXFpsRzmpvcm9rbnffBfSgDXAmnM1U7S9BLNgxtEoXraXlVlejnkti8+7aBmAqbQTto69eLPJlnGZ917BQLuhPqdapMNvLOwGP/CUVkzAMYsIndQafJsleRTYIRTlH2I+/ZMmaCZVUE4dxO97j1Nrbbksqb5zTzxKVJjgF5FpgZoa8KZeKh5TvFzWP5ZON53UcKM34J2D9juV6iNt34yffYq5OPkCblDHPiL9SbK01fGYlgVhdO9w9O/D+ybdsPC32syHnQgNQTH7GZlIJdJzamv9dN4zB/Hqk3LlECMHXWdYxCP/2EnEIFWO9P0TPw+Fb2B0t7hi/8ksvd7O2PaK3JL9i39prR4ZGeNkrJ3EmmM4dOV8CVZpTLrx+FshHgEszkmkn/nuiMrEqdz/4LK0fRsPLXkr9RFd2HJGrW6ng/lPYkVBT60w="
+###    - secure: "0Pm10LgXvYeSTGpK6QD3+BCMQv2C5OrBubk67im9R1r9HnxBViyGihZrnOzOdUDnP/j3VwCiuRmWBjmXVmG3c1K+vSpba14H3G9FFKQAwaXcKx3fsMVrXc2NFINjwL8tjKYWAQOPrXC2c1GDQiPOYgWP0YNK17UkAX0nRDZ7nCXZRvlG9xV+TF7lHKgsg7Twjp9hvXZaPJYnGPSyuko6JkBtuGstdptaO7OjfaRCrotiWT848Q/KzOQdVAzTmxMARInMRMXEP+XFkzEh7MKCx1rfz6xVvnA4iTEK8XHmk+/iqpTMFRHr2TpfT0QAF/+4hBpnJ6460ySqybUYd5kgJap+v+lL6w3s8o6gISR6m7YltqelwDeku51ZmgDtOPVmsfJIAd+XQ0SwD0gYd8r//wnNPKssGoGgDqp56g9lVlhzo9ZAkRk2PZh+o8G6vZpARIPnG2a/ENx8tC4QqoiGoR4swrgqDtqU6eruB0dfoNkkr+RiNTKsfJPs4ktQ31dF/qRJW/uLHSPWWrzonn2TE2+wf4pq1lYXadGfl+GhMcuXxTaWP9mEviS2BliGwVHQ8hn2yI40dXfIjZ0yZJPujQfRW/9tbAuKPGFdUm8RcglOpHOdNczMnodq0WfkbIVi/ohYEWmlK8LLvrhafNsevy+gP+c2Fqxw5mI3WnY/T1o="
+##
+##
+##
+##
+##android:
+##
+##  components:
+##
+##    - tools
+##
+##    - platform-tools
+##
+##    - build-tools-$ANDROID_BUILD_TOOLS
+##
+##    - android-$ANDROID_API
+##
+##    - android-$EMULATOR_API_LEVEL
+##
+##    - extra-google-m2repository
+##
+##    - extra-android-m2repository # for design library
+##
+##    - addon-google_apis-google-19 # google play services
+##
+##    - sys-img-arm64-v8a-addon-google_apis-google-$ANDROID_API_LEVEL
+##
+##    - sys-img-arm64-v8a-addon-google_apis-google-$EMULATOR_API_LEVEL
+##
+##  licenses:
+##
+##    - android-sdk-preview-license-.+
+##
+##    - android-sdk-license-.+
+##
+##    - google-gdk-license-.+
+##
+##before_install:
+##
+###  - openssl aes-256-cbc -K $encrypted_c0801aa05af4_key -iv $encrypted_c0801aa05af4_iv -in example_keystore.jks.enc -out example_keystore.jks -d
+##  - mkdir "$ANDROID_HOME/licenses" || true
+##
+##  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+##  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+##
+##  - chmod +x gradlew
+##  - ./gradlew dependencies || true
+##
+##before_script:
+##
+##
+##  - echo no | android create avd --force -n test -t android-28 --abi arm64-v8a
+##
+##  - emulator -avd test -no-skin -no-audio -no-window &
+##
+##  - android-wait-for-emulator
+##
+##  - adb shell input keyevent 82 &
+##
+##script:
+##
+##  - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+##
+###before_deploy:
+###
+###  - cp $TRAVIS_BUILD_DIR/example_keystore.jks $HOME
+###
+###  - cd app/build/outputs/apk/
+###
+###  - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/example_keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk ExampleKeystoreAlias
+###
+###
+###  # Verification
+###
+###  - jarsigner -verify app-release-unsigned.apk
+###
+###  - "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk TravisExample.apk"
+##
+##deploy:
+##
+##  provider: releases
+##
+## # file: TravisExample.apk
+##  skip_cleanup: true
+##
+##  on:
+##
+##    repo:  IniyanApp/traviscliexample
+##
+##    tags: true
+##
+##    jdk: oraclejdk8
+##
+##
+##  api_key:
+##    secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
+#
+#
+#language: android
+#jdk: oraclejdk8
+## Use the Travis Container-Based Infrastructure
+#sudo: false
+#
+##cache:
+##  directories:
+##    - ${TRAVIS_BUILD_DIR}/gradle/caches/
+##    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+#
+#env:
+#  global:
+#    - ANDROID_API_LEVEL=26
+#    - EMULATOR_API_LEVEL=21
+#    - ANDROID_BUILD_TOOLS_VERSION=26.0.3
+#    - ANDROID_ABI=armeabi-v7a
+#    - ANDROID_TAG=google_apis
+#    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+#
+#android:
+#  components:
+#    - tools
+#    - platform-tools
+#    - tools
+#    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+#    - android-$ANDROID_API_LEVEL
+#    - android-$EMULATOR_API_LEVEL
+#    # For Google APIs
+#    - addon-google_apis-google-$ANDROID_API_LEVEL
+#    - addon-google_apis-google-$EMULATOR_API_LEVEL
+#    # Google Play Services
+#    - extra-google-google_play_services
+#    # Support library
+#    - extra-android-support
+#    # Latest artifacts in local repository
+#    - extra-google-m2repository
+#    - extra-android-m2repository
+#    # Specify at least one system image
+#    - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+#    - sys-img-armeabi-v7a-google_apis-$EMULATOR_API_LEVEL
+#
+#before_script:
+#  # Create and start emulator
+#  - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
+#  - emulator -avd test -no-skin -no-audio -no-window &
+#  - android-wait-for-emulator
+#
+#script:
+#  - ./gradlew clean check connectedCheck -x library:signArchives -PdisablePreDe
+#
+#
+#
+##
+##
+##
+##
+##
 ##language: android
 ##jdk: oraclejdk8
 ##
-##sudo: false
-##
-###cache:
-###  directories:
-###    - $HOME/gradle/caches/
-###    - $HOME/gradle/wrapper/dists/
-##
-##
-##env:
-##  global:
-##      - ANDROID_API_LEVEL=28
-##      - EMULATOR_API_LEVEL=28
-##      - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-##      - ANDROID_ABI=arm64-v8a
-##      - ANDROID_TAG=google_apis
-##      - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+###sudo: false
 ##
 ##android:
 ##  components:
-##    - tools # to get the new `repository-11.xml`
+##    # Uncomment the lines below if you want to
+##    # use the latest revision of Android SDK Tools
+##    - tools
 ##    - platform-tools
-##    - tools # to install Android SDK tools 25.1.x
-##    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-##    - android-$ANDROID_API_LEVEL
-##    - android-$EMULATOR_API_LEVEL
-##    # For Google APIs
-##    - addon-google_apis-google-$ANDROID_API_LEVEL
-##    - addon-google_apis-google-$EMULATOR_API_LEVEL
-##    # Google Play Services
+##    - tools
+##
+##    # The BuildTools version used by your project
+##    - build-tools-26.0.1
+##
+##    # The SDK version used to compile your project
+##    - android-26
+##
+##    # Additional components
 ##    - extra-google-google_play_services
-##    # Support library
-##    - extra-android-support
-##    # Latest artifacts in local repository
 ##    - extra-google-m2repository
 ##    - extra-android-m2repository
-##    # Specify at least one system image
-##    - sys-img-arm64-v8a-google_apis-$ANDROID_API_LEVEL
-##    - sys-img-arm64-v8a-google_apis-$EMULATOR_API_LEVEL
-##  licenses:
-##    - android-sdk-license-.+
-##    - .+
+##    # - addon-google_apis-google-19
 ##
-##before_script:
-##  # Create and start emulator
-##  - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
-##  - emulator -avd test -no-skin -no-audio -no-window &
-##  - android-wait-for-emulator
+##    # Specify at least one system image,
+##    # if you need to run emulator(s) during your tests
+##    - sys-img-armeabi-v7a-android-22
+##    - sys-img-armeabi-v7a-android-17
 ##
+###before_script:
+###  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+###  - emulator -avd test -no-skin -no-audio -no-window &
+###  - android-wait-for-emulator
+###  - adb shell input keyevent 82 &
 ##
-##script:
-##  - ./gradlew clean check connectedCheck -x library:signArchives -PdisablePreDex
+##install: skip
 ##
-##deploy:
-##  provider: releases
-##  github-token: d3748eb233c70834e1dd5d8b7082af1b25a1d295
-##  api_key:
-##    secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
+### env:
+###   global:
+###     - CACHE_DIR=$([ $TRAVIS_OS_NAME = 'linux' ] && echo "FOO" || echo "BAR")
 ##
-##  # file_glob: true
-##  #file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
-##  # local_dir: build
-##  on:
-##  repo: IniyanApp/traviscliexample
-##  #branch: master
-###    tags: true
+### cache:
+###   directories:
+###     - $CACHE_DIR
 ##
-#
-#
-#os: linux
-#
-#sudo: required
-#language: android
-#jdk: oraclejdk8
-#dist : trusty
-#before_cache:
-#
-#  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-#
-#  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-#
-#cache:
-#
-#  directories:
-#
-#    - $HOME/.gradle/caches/
-#
-#    - $HOME/.gradle/wrapper/
-#
-#env:
-#
-#  global:
-#
-#    - ANDROID_API=28
-#
-#    - EMULATOR_API=28
-#
-#    - ANDROID_BUILD_TOOLS=28.0.3
-#
-#    - ADB_INSTALL_TIMEOUT=5 # minutes
-##    - secure: "kYQFW12wY9zzMNqtor4sTeE4k/877t0igpS/AaPon7MNr+ebqEkeg9z6L1sE+81bopDX+0K62AxO4mKVxOiGGGVU5JS1ZFWg/BhPyKCThm1tUzXCBs5s8AxWU9s9MudfTHgPLwsOhvpKogivA0ZXt5iEFrkv57A51qZFMQ0Irl8iAaMiwjzv+FRT26jCCBCKB5jlRwocwOB7wEujlUN289i5y9o/wcWhBmA5YY7y64hdlZEs/bmF7RXXFpsRzmpvcm9rbnffBfSgDXAmnM1U7S9BLNgxtEoXraXlVlejnkti8+7aBmAqbQTto69eLPJlnGZ917BQLuhPqdapMNvLOwGP/CUVkzAMYsIndQafJsleRTYIRTlH2I+/ZMmaCZVUE4dxO97j1Nrbbksqb5zTzxKVJjgF5FpgZoa8KZeKh5TvFzWP5ZON53UcKM34J2D9juV6iNt34yffYq5OPkCblDHPiL9SbK01fGYlgVhdO9w9O/D+ybdsPC32syHnQgNQTH7GZlIJdJzamv9dN4zB/Hqk3LlECMHXWdYxCP/2EnEIFWO9P0TPw+Fb2B0t7hi/8ksvd7O2PaK3JL9i39prR4ZGeNkrJ3EmmM4dOV8CVZpTLrx+FshHgEszkmkn/nuiMrEqdz/4LK0fRsPLXkr9RFd2HJGrW6ng/lPYkVBT60w="
-##    - secure: "0Pm10LgXvYeSTGpK6QD3+BCMQv2C5OrBubk67im9R1r9HnxBViyGihZrnOzOdUDnP/j3VwCiuRmWBjmXVmG3c1K+vSpba14H3G9FFKQAwaXcKx3fsMVrXc2NFINjwL8tjKYWAQOPrXC2c1GDQiPOYgWP0YNK17UkAX0nRDZ7nCXZRvlG9xV+TF7lHKgsg7Twjp9hvXZaPJYnGPSyuko6JkBtuGstdptaO7OjfaRCrotiWT848Q/KzOQdVAzTmxMARInMRMXEP+XFkzEh7MKCx1rfz6xVvnA4iTEK8XHmk+/iqpTMFRHr2TpfT0QAF/+4hBpnJ6460ySqybUYd5kgJap+v+lL6w3s8o6gISR6m7YltqelwDeku51ZmgDtOPVmsfJIAd+XQ0SwD0gYd8r//wnNPKssGoGgDqp56g9lVlhzo9ZAkRk2PZh+o8G6vZpARIPnG2a/ENx8tC4QqoiGoR4swrgqDtqU6eruB0dfoNkkr+RiNTKsfJPs4ktQ31dF/qRJW/uLHSPWWrzonn2TE2+wf4pq1lYXadGfl+GhMcuXxTaWP9mEviS2BliGwVHQ8hn2yI40dXfIjZ0yZJPujQfRW/9tbAuKPGFdUm8RcglOpHOdNczMnodq0WfkbIVi/ohYEWmlK8LLvrhafNsevy+gP+c2Fqxw5mI3WnY/T1o="
-#
-#
-#
-#
-#android:
-#
-#  components:
-#
-#    - tools
-#
-#    - platform-tools
-#
-#    - build-tools-$ANDROID_BUILD_TOOLS
-#
-#    - android-$ANDROID_API
-#
-#    - android-$EMULATOR_API_LEVEL
-#
-#    - extra-google-m2repository
-#
-#    - extra-android-m2repository # for design library
-#
-#    - addon-google_apis-google-19 # google play services
-#
-#    - sys-img-arm64-v8a-addon-google_apis-google-$ANDROID_API_LEVEL
-#
-#    - sys-img-arm64-v8a-addon-google_apis-google-$EMULATOR_API_LEVEL
-#
-#  licenses:
-#
-#    - android-sdk-preview-license-.+
-#
-#    - android-sdk-license-.+
-#
-#    - google-gdk-license-.+
-#
-#before_install:
-#
-##  - openssl aes-256-cbc -K $encrypted_c0801aa05af4_key -iv $encrypted_c0801aa05af4_iv -in example_keystore.jks.enc -out example_keystore.jks -d
-#  - mkdir "$ANDROID_HOME/licenses" || true
-#
-#  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-#  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-#
-#  - chmod +x gradlew
-#  - ./gradlew dependencies || true
-#
-#before_script:
-#
-#
-#  - echo no | android create avd --force -n test -t android-28 --abi arm64-v8a
-#
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#
-#  - android-wait-for-emulator
-#
-#  - adb shell input keyevent 82 &
-#
-#script:
-#
-#  - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
-#
-##before_deploy:
+### env:
+###   global:
+###     - PATH=/usr/local/android-sdk/tools/bin:$PATH
 ##
-##  - cp $TRAVIS_BUILD_DIR/example_keystore.jks $HOME
+##script: skip
+### android:
+###   components:
+###     - tools
+###     - platform-tools
+###     - tools
 ##
-##  - cd app/build/outputs/apk/
+###     - android-25
 ##
-##  - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/example_keystore.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk ExampleKeystoreAlias
+###     - build-tools-25.0.2
+###     - extra
+###     - extra-google-m2repository
+###     - extra-android-m2repository
+###     - extra-android-support
+##
+### jdk: oraclejdk8
+##
+##matrix:
+##  include:
+##    - sudo: false
+##      dist: precise
+##      env: DIST=precise STACK=EC2
+##    # - sudo: required
+##    #   dist: precise
+##    #   env: DIST=precise STACK=GCE
+##    # - sudo: false
+##    #   dist: trusty
+##    #   env: DIST=trusty STACK=EC2
+##    # - sudo: required
+##    #   dist: trusty
+##    #   env: DIST=trusty STACK=GCE
+##    # - sudo: false
+##    #   dist: trusty
+##    #   group: edge
+##    #   env: DIST=trusty STACK=EC2 GROUP=edge
+##    # - sudo: required
+##    #   dist: trusty
+##    #   group: edge
+##    #   env: DIST=trusty STACK=GCE GROUP=edge
+###     - os: osx
 ##
 ##
-##  # Verification
+##notifications:
+##  email: false
 ##
-##  - jarsigner -verify app-release-unsigned.apk
+##    #  slack:
+##    #  rooms:
+##    #    - secure: "KZTfjxhkOdDDZYD2ThBILt2ShYtdEee3PudFZlQBfpxG9N470GfxnKVfOl7Odu4lN6cIupwC4S4BnehubEywSR99l60VmfhePUCTqDLYy+iR9+guTvaECdXdaau3jTKhFdu5u60ITsiw5Yb+hwAaGFO0HmQhqR9XVr/U8IGQlok="
+##    #  template:
+##    #    - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration} (elapsed time: %{elapsed_time}) subject: %{commit_subject} message: %{commit_message} foobar"
+##    #  on_success: always
 ##
-##  - "${ANDROID_HOME}/build-tools/24.0.2/zipalign -v 4 app-release-unsigned.apk TravisExample.apk"
-#
-#deploy:
-#
-#  provider: releases
-#
-# # file: TravisExample.apk
-#  skip_cleanup: true
-#
-#  on:
-#
-#    repo:  IniyanApp/traviscliexample
-#
-#    tags: true
-#
-#    jdk: oraclejdk8
-#
-#
-#  api_key:
-#    secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
 
 
 language: android
+sudo: required
 jdk: oraclejdk8
-# Use the Travis Container-Based Infrastructure
-sudo: false
-
-#cache:
-#  directories:
-#    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-#    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
 
 env:
   global:
-    - ANDROID_API_LEVEL=26
-    - EMULATOR_API_LEVEL=21
-    - ANDROID_BUILD_TOOLS_VERSION=26.0.3
+    - ANDROID_API_LEVEL=28
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
     - ANDROID_ABI=armeabi-v7a
-    - ANDROID_TAG=google_apis
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
   components:
     - tools
     - platform-tools
     - tools
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    - android-$EMULATOR_API_LEVEL
-    # For Google APIs
-    - addon-google_apis-google-$ANDROID_API_LEVEL
-    - addon-google_apis-google-$EMULATOR_API_LEVEL
-    # Google Play Services
-    - extra-google-google_play_services
-    # Support library
-    - extra-android-support
-    # Latest artifacts in local repository
-    - extra-google-m2repository
     - extra-android-m2repository
-    # Specify at least one system image
-    - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
-    - sys-img-armeabi-v7a-google_apis-$EMULATOR_API_LEVEL
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_install:
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "build-tools;28.0.3"
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 before_script:
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
+  - chmod +x gradlew
 
 script:
-  - ./gradlew clean check connectedCheck -x library:signArchives -PdisablePreDe
+  - ./gradlew clean build
+  - ./gradlew test
