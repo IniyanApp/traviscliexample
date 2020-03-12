@@ -24,7 +24,7 @@ deploy:
   file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
   local_dir: build
   on:
-    repo: IniyanApp/traviscliexample
-#    branch: master
+#    repo: IniyanApp/traviscliexample
+  branch: master
     tags: true
 
