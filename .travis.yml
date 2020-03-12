@@ -8,7 +8,6 @@ env:
       - ANDROID_BUILD_TOOLS_VERSION=28.0.3
       - ANDROID_ABI=armeabi-v7a
       - ANDROID_TAG=google_apis
-      - ADB_INSTALL_TIMEOUT=20
 
 android:
   components:
@@ -24,25 +23,24 @@ android:
     - android-sdk-license-.+
     - .+
 
-before_cache: -rm -f $HOME/.gradle/caches/modules-2/modules-2.lock -rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+#before_cache: -rm -f $HOME/.gradle/caches/modules-2/modules-2.lock -rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+#cache:
+#  directories:
+#    - $HOME/.gradle/caches/
+#    - $HOME/.gradle/wrapper/
+#    - $HOME/.android/build-cache
 
-before_install:
-  - chmod +x gradlew
+#before_install:
+#  - chmod +x gradlew
 
 before_script:
-  # Create and start emulator.
   - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
   - emulator -avd test -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
-sudo: false
-install: true
+#sudo: false
+#install: true
 
 script:
   - ./gradlew assembleRelease --stacktrace
