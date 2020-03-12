@@ -1,0 +1,30 @@
+language: android
+jdk: oraclejdk8
+
+env:
+  global:
+    - ANDROID_API=29
+android:
+  components:
+    - tools
+    - tools
+    - platform-tools
+    - build-tools-29.0.3
+    - android-${ANDROID_API}
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-.+
+
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  github-token: $GITHUB_TOKEN
+  file_glob: true
+  file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
+  local_dir: build
+  on:
+    repo: IniyanApp/traviscliexample
+#    branch: master
+    tags: true
+
