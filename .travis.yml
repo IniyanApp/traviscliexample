@@ -3,22 +3,57 @@ jdk: oraclejdk8
 
 env:
   global:
-    - ANDROID_API=28
+      - ANDROID_API=28
+      - ANDROID_API_LEVEL=28
+      - ANDROID_EMULATOR_LEVEL=28
+      - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+      - ANDROID_ABI=armeabi-v7a
+      - ANDROID_TAG=google_apis
+      - ADB_INSTALL_TIMEOUT=20
+
 android:
   components:
     - tools
-    - tools
     - platform-tools
-    - build-tools-28.0.3
+    - build-tools-${ANDROID_BUILD_TOOLS_VERSION}
     - android-${ANDROID_API}
     - extra-android-m2repository
+    - android-$ANDROID_EMULATOR_LEVEL
+    - sys-img-armeabi-v7a-google_apis-$ANDROID_EMULATOR_LEVEL
+
   licenses:
     - android-sdk-license-.+
+    - '.+'
 
+before_cache: "-rm -f $HOME/.gradle/caches/modules-2/modules-2.lock -rm -fr $HOME/.gradle/caches/*/plugin-resolution/"
+cache:
+  directories:
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
+    -
+before_install:
+  - chmod +x gradlew
+
+before_script:
+  # Create and start emulator.
+  - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
+  - emulator -avd test -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew assembleRelease --stacktrace
+  - ./gradlew build
 
 deploy:
   provider: releases
   github-token: d3748eb233c70834e1dd5d8b7082af1b25a1d295
+  skip_cleanup: true
+  overwrite: true
   api_key:
     secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
 
@@ -28,5 +63,6 @@ deploy:
   on:
   repo: IniyanApp/traviscliexample
   #branch: master
-#    tags: true
+    tags: true
+
 
