@@ -1,4 +1,3 @@
-os: windows
 language: android
 jdk: oraclejdk8
 
@@ -28,6 +27,6 @@ deploy:
  # local_dir: build
   on:
   repo: IniyanApp/traviscliexample
-  branch: master
+  #branch: master
 #    tags: true
 
