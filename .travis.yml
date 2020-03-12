@@ -150,7 +150,6 @@ before_install:
 
 before_script:
 
-  arm64-v8a
  
   - echo no | android create avd --force -n test -t android-28 --abi arm64-v8a
 
