@@ -18,11 +18,10 @@ android:
 
 deploy:
   provider: releases
-  skip_cleanup: true
-  github-token: $GITHUB_TOKEN
-  file_glob: true
-  file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
-  local_dir: build
+  github-token: d3748eb233c70834e1dd5d8b7082af1b25a1d295
+ # file_glob: true
+ $ file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
+ # local_dir: build
   on:
 #    repo: IniyanApp/traviscliexample
   branch: master
