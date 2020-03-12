@@ -20,11 +20,14 @@ android:
 deploy:
   provider: releases
   github-token: d3748eb233c70834e1dd5d8b7082af1b25a1d295
- # file_glob: true
+  api_key:
+    secure: u9opw/AUlj3RZnoW/1yJugwtuO3MOoLxO48HZ86id+uKmXnIzihmuBzZLXpef+XRhjn5W35wfNUS3VO9zCUkyrhXZMMtXAe2Eqr4ULSAcRbyqp/OCl0GelXMEtOYITgfs06q8cpawCWd6IeZK75u5qzJ+pf8aZ9oZ2mrzwF8LXy4JDSRERBed9IFf6hLZn2ns3GKMaQpdiobnV5jOcFi5dLH1fmAgxOFBJGZmOzXPFhCumZculW45RXjhldJZaCpv7RsyzQySctC8r0RR82RW7MrG/DSL5xKrpsR6EKQiWDBgIJFbVJueN7bww/3NwyQ0nnmKLSohwWnuXvBndzSqEYBos4aiIcfSLLjfSq+uuNAjFn+p3ziKUREGJV04UeV+vlP/kkQJU+BCqPXitCcI/pKHYpI7k/2ahDRi7Xuh+4EkuOvx45dmTxECpf1DJT1h5c0Wz0WnzJda0duMq5J6p5fgcbF1FrHXeT3b3bXnC+14NzHIebYSZ7Xa7paBhUnIPZqM5/pvfCClnGWgyWeAYwT6J2kO++OIcN89Kq0DgW++ukxyjfXGBAnsnIumniQMWtWovLB/qFm2+O+i5/axqfN4rsemm+ucs6w4P+AR1zBqc6njPcQika5yN7pegDVC4HMI6IkLSgQGz0LVWvbPsGCfRCei7SQK8f8YXJREYo=
+
+  # file_glob: true
   #file: /home/travis/build/TravisCliExample/app/build/outputs/apk/release/*
  # local_dir: build
   on:
   repo: IniyanApp/traviscliexample
-#  branch: master
+  branch: master
 #    tags: true
 
